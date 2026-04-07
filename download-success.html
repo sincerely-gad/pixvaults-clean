@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Download – PixVaults</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #0f0f12;
+      color: #ffffff;
+      font-family: Arial, Helvetica, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card {
+      background: #17171c;
+      border-radius: 18px;
+      padding: 48px 40px;
+      text-align: center;
+      max-width: 420px;
+      width: 90%;
+    }
+
+    /* ── Spinner ── */
+    .spinner {
+      width: 56px;
+      height: 56px;
+      border: 4px solid #2a2a32;
+      border-top-color: #ff3b6a;
+      border-radius: 50%;
+      animation: spin 0.85s linear infinite;
+      margin: 0 auto 24px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* ── Success icon ── */
+    .check-circle {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: rgba(255, 59, 106, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+    }
+
+    .check-circle svg {
+      width: 32px;
+      height: 32px;
+      stroke: #ff3b6a;
+      stroke-width: 2.5;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    h2 {
+      font-size: 22px;
+      margin-bottom: 10px;
+    }
+
+    .sub {
+      color: #b9b9c3;
+      font-size: 15px;
+      margin-bottom: 32px;
+    }
+
+    .btn-home {
+      display: inline-block;
+      background: #ff3b6a;
+      color: #ffffff;
+      padding: 13px 32px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 15px;
+      transition: opacity 0.2s;
+    }
+
+    .btn-home:hover { opacity: 0.88; }
+
+    /* ── Error state ── */
+    .error-icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+    }
+
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+
+    <!-- Loading state (shown first) -->
+    <div id="state-loading">
+      <div class="spinner"></div>
+      <h2>Preparing your download...</h2>
+      <p class="sub">This will only take a moment.</p>
+    </div>
+
+    <!-- Success state (shown after download triggers) -->
+    <div id="state-success" class="hidden">
+      <div class="check-circle">
+        <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <h2>Download started successfully</h2>
+      <p class="sub">Enjoy your files.</p>
+      <a href="/index.html" class="btn-home">Return to Home</a>
+    </div>
+
+    <!-- Error state -->
+    <div id="state-error" class="hidden">
+      <div class="error-icon">&#x26A0;&#xFE0F;</div>
+      <h2>Something went wrong</h2>
+      <p class="sub" id="error-msg">Your link may have expired or already been used.</p>
+      <a href="/index.html" class="btn-home" style="margin-top:8px;">Return to Home</a>
+    </div>
+
+  </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search)
+    const token = params.get('token')
+
+    function showSuccess() {
+      document.getElementById('state-loading').classList.add('hidden')
+      document.getElementById('state-success').classList.remove('hidden')
+    }
+
+    function showError(msg) {
+      document.getElementById('state-loading').classList.add('hidden')
+      if (msg) document.getElementById('error-msg').textContent = msg
+      document.getElementById('state-error').classList.remove('hidden')
+    }
+
+    if (!token) {
+      showError('No download token found in the URL.')
+    } else {
+      setTimeout(() => {
+        fetch(`/.netlify/functions/download?token=${encodeURIComponent(token)}`)
+          .then(res => {
+            if (!res.ok) {
+              return res.json().then(d => { throw new Error(d.message || 'Download failed') })
+            }
+            return res.blob()
+          })
+          .then(blob => {
+            // Create a blob URL and click it — page stays fully visible
+            const url = URL.createObjectURL(blob)
+            const a = document.createElement('a')
+            a.href = url
+            a.download = 'pixvaults-pack.zip'
+            document.body.appendChild(a)
+            a.click()
+            document.body.removeChild(a)
+            URL.revokeObjectURL(url)
+            showSuccess()
+          })
+          .catch(err => showError(err.message))
+      }, 2500)
+    }
+  </script>
+
+</body>
+</html>

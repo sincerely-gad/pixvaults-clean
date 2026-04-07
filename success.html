@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Payment Received – PixVaults</title>
+  <style>
+    body {
+      background: #0f0f12;
+      color: #ffffff;
+      font-family: Arial, Helvetica, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      text-align: center;
+      padding: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div>
+    <p style="color:#b9b9c3;font-size:16px;">Payment received. Preparing your download...</p>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search)
+    const orderId = params.get('order_id')
+
+    if (!orderId) {
+      document.body.innerHTML = '<p style="color:#b9b9c3">Missing order ID. <a href="/index.html" style="color:#ff3b6a">Return to Home</a></p>'
+    } else {
+      fetch(`/.netlify/functions/verify?order_id=${encodeURIComponent(orderId)}`)
+        .then(res => res.json())
+        .then(data => {
+          if (data.status === 'finished' && data.download_token) {
+            window.location.href = `/download-success.html?token=${encodeURIComponent(data.download_token)}`
+          } else {
+            document.body.innerHTML = '<p style="color:#b9b9c3">Payment not confirmed yet. Please wait a few seconds and <a href="javascript:location.reload()" style="color:#ff3b6a">refresh</a>.</p>'
+          }
+        })
+        .catch(() => {
+          document.body.innerHTML = '<p style="color:#b9b9c3">Still processing... please <a href="javascript:location.reload()" style="color:#ff3b6a">refresh in a few seconds</a>.</p>'
+        })
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,408 @@
+<!DOCTYPE html> 
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pixvaults</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #0f0f12;
+      color: #ffffff;
+    }
+    .wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    header {
+      text-align: center;
+      padding: 24px 10px;
+    }
+    header p {
+      margin-top: 10px;
+      color: #cfcfd6;
+    }
+.logo {
+  max-width: 140px;   /* adjust: 80–140px sweet spot */
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+    /* GRID */
+    .packs-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-top: 30px;
+    }
+
+    .price {
+    color: #ff3b6a;  /* matches button color */
+    font-weight: bold;
+}
+
+.tagline {
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.pack-image {
+  position: relative;
+  overflow: hidden;
+  height: 360px; /* adjust once, everything aligns */
+}
+
+.pack-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+    .pack-card {
+      background: #17171c;
+      border-radius: 14px;
+      overflow: hidden;
+      text-align: center;
+      padding-bottom: 16px;
+    }
+
+    /* FADE CONTAINER */
+    .pack-image {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .pack-image img {
+      width: 100%;
+      display: block;
+    }
+
+.pack-image::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(23,23,28,0) 55%,
+    rgba(23,23,28,0.6) 75%,
+    rgba(23,23,28,1) 100%
+  );
+  pointer-events: none;
+}
+
+
+    .pack-info {
+      padding: 12px;
+    }
+
+    .pack-info h3 {
+      margin: 6px 0 4px;
+      font-size: 18px;
+    }
+
+    .pack-info p {
+      margin: 0;
+      font-size: 14px;
+      color: #b9b9c3;
+    }
+
+    .btn {
+      display: block;
+      margin: 14px 16px 0;
+      background: #ff3b6a;
+      color: #ffffff;
+      padding: 12px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .btn:hover {
+      opacity: 0.9;
+    }
+
+    .cta {
+      text-align: center;
+      margin: 40px 0 20px;
+    }
+
+    footer {
+      text-align: center;
+      color: #9a9aa6;
+      font-size: 12px;
+      padding: 20px 0;
+      border-top: 1px solid #222;
+    }
+
+    @media (max-width: 900px) {
+      .packs-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 600px) {
+      .packs-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    footer a {
+  color: #ff3b6a;
+  text-decoration: none;
+  font-weight: bold;
+}
+    .faq {
+  max-width: 700px;
+  margin: 60px auto 40px;
+}
+
+.faq h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.faq-item {
+  background: #17171c;
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-bottom: 12px;
+}
+
+.faq-item h4 {
+  margin: 0 0 6px;
+  font-size: 15px;
+}
+
+.pack-image img {
+  transition: transform 0.4s ease;
+}
+
+.pack-card:hover img {
+  transform: scale(1.05);
+}
+
+.faq-item p {
+  margin: 0;
+  font-size: 14px;
+  color: #b9b9c3;
+}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+
+    <!-- Header -->
+    <header>
+      <img src="/logo.svg" alt="PixVaults Logo" class="logo">
+      <p class="tagline">Private Fantasy collections.
+Instant unlock.
+No subscriptions.</p>
+    </header>
+
+    <!-- Packs Grid -->
+   <section class="packs-grid" id="packs"></section>
+
+    <!-- CTA -->
+    <section class="cta">
+      <h2>Get your full pack instantly</h2>
+      <p>Private • Simple • One click</p>
+    </section>
+    
+    <section class="faq">
+  <h2>FAQ</h2>
+
+  <div class="faq-item">
+    <h4>How do I get my pack after payment?</h4>
+    <p>Instant download link appears immediately after checkout.</p>
+  </div>
+
+  <div class="faq-item">
+    <h4>Do I need an account?</h4>
+    <p>No account, no signup. Pay and download.</p>
+  </div>
+
+  <div class="faq-item">
+    <h4>What format are the files?</h4>
+    <p>High-quality JPG/PNG images delivered in a ZIP file.</p>
+  </div>
+
+  <div class="faq-item">
+    <h4>Is my payment private?</h4>
+    <p>Yes. All payments are processed securely and discreetly.</p>
+  </div>
+
+  <div class="faq-item">
+    <h4>Can I re-download my purchase?</h4>
+    <p>Yes, within the allowed download limit shown at checkout.</p>
+  </div>
+</section>
+
+    <!-- Footer -->
+    <footer>
+  Privacy protected. Instant download upon purchase.<br>
+
+  <a href="mailto:support@pixvaults.com?subject=Pixvaults Support Request">
+  support@pixvaults.com
+</a> .<br>
+<span style="opacity:0.8;">
+  <span style="color:#ff3b6a; font-weight:bold;">18+ Only.</span> All content is digital creations.
+</span>
+
+</footer>
+
+  </div>
+<script>
+
+const packs = [
+{
+id:"emma_lyla",
+name:"Emma & Lyla OF models",
+images:13,
+price:3.5,
+preview:"/Thumbnails/emma-lyla-of-models.png"
+},
+{
+id:"jenna_ortega",
+name:"Jenna Ortega",
+images:12,
+price:6,
+preview:"/Thumbnails/jenna-ortega.jpg"
+},
+{
+id:"zendaya",
+name:"Zendaya",
+images:11,
+price:6,
+preview:"/Thumbnails/zendaya.jpg"
+},
+{
+id:"ariana_nurse",
+name:"Ariana OF Nurse Model",
+images:12,
+price:3.5,
+preview:"/Thumbnails/ariana-of-nurse.png"
+},
+{
+id:"sedney",
+name:"Sedney Sweeney",
+images:13,
+price:6,
+preview:"/Thumbnails/sedney-sweeney.jpg"
+},
+{
+id:"flora",
+name:"Flora OF Maid model",
+images:10,
+price:3.5,
+preview:"/Thumbnails/flora-of-maid.png"
+},
+{
+id:"emma_meyers",
+name:"Emma Meyers",
+images:11,
+price:6,
+preview:"/Thumbnails/emma-meyers.jpg"
+},
+{
+id:"nina",
+name:"Nina Dobrev",
+images:13,
+price:6,
+preview:"/Thumbnails/nina-dobrev.jpg"
+},
+{
+id:"kitty",
+name:"Kitty Girl OF Model",
+images:6,
+price:2,
+preview:"/Thumbnails/kittygirl.png"
+},
+{
+id:"emma_jenna",
+name:"Jenna Ortega & Emma Meyers",
+images:23,
+price:9,
+preview:"/Thumbnails/emma-Jenna.png"
+},
+{
+id:"zendaya_sedney",
+name:"Zendaya & Sedney Sweeney",
+images:24,
+price:9,
+preview:"/Thumbnails/zendaya-sedney.png"
+},
+{
+id:"emma_zendaya",
+name:"Zendaya & Emma Meyers",
+images:22,
+price:9,
+preview:"/Thumbnails/emma-zendaya.png"
+},
+{
+id:"nina_sedney",
+name:"Sedney Sweeney & Nina Dobrev",
+images:26,
+price:9,
+preview:"/Thumbnails/nina-sedney.png"
+},
+{
+id:"jenna_nina",
+name:"Jenna Ortega & Nina Dobrev",
+images:25,
+price:9,
+preview:"/Thumbnails/jenna-nina.png"
+},
+{
+id:"jenna_zendaya",
+name:"Jenna Ortega & Zendaya",
+images:23,
+price:9,
+preview:"/Thumbnails/jenna-zendaya.png"
+},
+{
+id:"emma_sedney",
+name:"Emma Meyers & Sedney Sweeney",
+images:24,
+price:9,
+preview:"/Thumbnails/emma-sedney.png"
+},
+{
+id:"of_collection",
+name:"OF Models Full collection",
+images:41,
+price:10,
+preview:"/Thumbnails/of-models.png"
+}
+]
+
+const container = document.getElementById("packs")
+
+packs.forEach(pack => {
+
+container.innerHTML += `
+<div class="pack-card">
+
+<div class="pack-image">
+  <img src="${pack.preview}" alt="${pack.name}">
+</div>
+
+<div class="pack-info">
+  <h3>${pack.name}</h3>
+  <p>${pack.images} images • Instant download • <span class="price">$${pack.price}</span></p>
+</div>
+
+<a class="btn" href="/.netlify/functions/createPayment?pack=${pack.id}">
+  Unlock Full Pack
+</a>
+
+</div>
+`
+
+})
+
+</script>
+</body>
+</html>
