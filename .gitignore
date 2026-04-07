@@ -9,9 +9,6 @@ node_modules/
 # Netlify local metadata
 .netlify/
 
-# Generated delivery assets
-downloads/
-
 # Logs
 *.log
 npm-debug.log*
