@@ -1,29 +1,4 @@
-const fs = require('fs')
-const path = require('path')
 const pool = require('./db')
-
-const ZIP_FILES = {
-  emma_lyla:     'emma_lyla.zip',
-  jenna_ortega:  'jenna_ortega.zip',
-  zendaya:       'zendaya.zip',
-  ariana_nurse:  'ariana_nurse.zip',
-  sedney:        'sedney.zip',
-  flora:         'flora.zip',
-  emma_meyers:   'emma_meyers.zip',
-  nina:          'nina.zip',
-  kitty:         'kitty.zip',
-  emma_jenna:    'emma_jenna.zip',
-  zendaya_sedney:'zendaya_sedney.zip',
-  emma_zendaya:  'emma_zendaya.zip',
-  nina_sedney:   'nina_sedney.zip',
-  jenna_nina:    'jenna_nina.zip',
-  jenna_zendaya: 'jenna_zendaya.zip',
-  emma_sedney:   'emma_sedney.zip',
-  of_collection: 'of_collection.zip'
-}
-
-// Resolves to <project-root>/downloads/ regardless of where Node is invoked from
-const DOWNLOADS_DIR = path.join(__dirname, '..', '..', 'downloads')
 
 exports.handler = async (event) => {
   const token = event.queryStringParameters.token
@@ -96,40 +71,27 @@ exports.handler = async (event) => {
     }
   }
 
-  const zipFilename = ZIP_FILES[row.product_slug]
-  if (!zipFilename) {
+  if (!row.product_slug) {
     return {
       statusCode: 500,
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ok: false, message: 'No ZIP mapped for this product' })
+      body: JSON.stringify({ ok: false, message: 'Missing product slug for this payment' })
     }
   }
 
-  const zipPath = path.join(DOWNLOADS_DIR, zipFilename)
-  if (!fs.existsSync(zipPath)) {
-    return {
-      statusCode: 404,
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ok: false, message: 'ZIP file not found on server' })
-    }
-  }
+  const downloadUrl = `https://www.pixvaults.com/downloads/${encodeURIComponent(row.product_slug)}.zip`
 
-  // Increment attempts before serving — prevents retrying on partial downloads
+  // Increment attempts before redirecting so download attempts are still enforced.
   await pool.query(
     `UPDATE download_tokens SET attempts_used = attempts_used + 1 WHERE id = $1`,
     [row.token_id]
   )
 
-  const fileBuffer = fs.readFileSync(zipPath)
-
   return {
-    statusCode: 200,
+    statusCode: 302,
     headers: {
-      'Content-Type': 'application/zip',
-      'Content-Disposition': `attachment; filename="${zipFilename}"`,
-      'Content-Length': String(fileBuffer.length)
+      Location: downloadUrl
     },
-    body: fileBuffer.toString('base64'),
-    isBase64Encoded: true
+    body: ''
   }
 }
