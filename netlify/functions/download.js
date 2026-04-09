@@ -1,7 +1,18 @@
 const pool = require('./db')
+const { S3Client, GetObjectCommand } = require('@aws-sdk/client-s3')
+const { getSignedUrl } = require('@aws-sdk/s3-request-presigner')
+
+const s3 = new S3Client({
+  region: 'auto',
+  endpoint: `https://${process.env.R2_ACCOUNT_ID}.r2.cloudflarestorage.com`,
+  credentials: {
+    accessKeyId: process.env.R2_ACCESS_KEY_ID,
+    secretAccessKey: process.env.R2_SECRET_ACCESS_KEY
+  }
+})
 
 exports.handler = async (event) => {
-  const token = event.queryStringParameters.token
+  const token = event.queryStringParameters?.token
 
   if (!token) {
     return {
@@ -79,19 +90,39 @@ exports.handler = async (event) => {
     }
   }
 
-  const downloadUrl = `https://www.pixvaults.com/downloads/${encodeURIComponent(row.product_slug)}.zip`
-
-  // Increment attempts before redirecting so download attempts are still enforced.
   await pool.query(
-    `UPDATE download_tokens SET attempts_used = attempts_used + 1 WHERE id = $1`,
+    `UPDATE download_tokens
+     SET attempts_used = attempts_used + 1
+     WHERE id = $1`,
     [row.token_id]
   )
 
-  return {
-    statusCode: 302,
-    headers: {
-      Location: downloadUrl
-    },
-    body: ''
+  const key = `${row.product_slug}.zip`
+
+  try {
+    const signedUrl = await getSignedUrl(
+      s3,
+      new GetObjectCommand({
+        Bucket: process.env.R2_BUCKET_NAME,
+        Key: key
+      }),
+      { expiresIn: 600 }
+    )
+
+    return {
+      statusCode: 302,
+      headers: {
+        Location: signedUrl
+      },
+      body: ''
+    }
+  } catch (err) {
+    console.error('R2 signed URL error:', err)
+
+    return {
+      statusCode: 500,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ok: false, message: 'Could not create secure download link' })
+    }
   }
 }
