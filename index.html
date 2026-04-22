@@ -11,6 +11,68 @@
       background: #0f0f12;
       color: #ffffff;
     }
+
+    .age-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.92);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .age-box {
+      background: #17171c;
+      border-radius: 16px;
+      padding: 40px 32px;
+      text-align: center;
+      max-width: 380px;
+      width: 90%;
+    }
+
+    .age-box h2 {
+      font-size: 22px;
+      margin: 0 0 10px;
+    }
+
+    .age-box p {
+      color: #b9b9c3;
+      font-size: 14px;
+      margin: 0 0 28px;
+    }
+
+    .age-buttons {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+    }
+
+    .age-btn-yes {
+      background: #ff3b6a;
+      color: #fff;
+      border: none;
+      padding: 12px 32px;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .age-btn-yes:hover { opacity: 0.9; }
+
+    .age-btn-no {
+      background: #2a2a33;
+      color: #b9b9c3;
+      border: none;
+      padding: 12px 32px;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .age-btn-no:hover { background: #333340; }
     .wrap {
       max-width: 1100px;
       margin: 0 auto;
@@ -154,28 +216,6 @@
   text-decoration: none;
   font-weight: bold;
 }
-    .faq {
-  max-width: 700px;
-  margin: 60px auto 40px;
-}
-
-.faq h2 {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.faq-item {
-  background: #17171c;
-  border-radius: 10px;
-  padding: 14px 16px;
-  margin-bottom: 12px;
-}
-
-.faq-item h4 {
-  margin: 0 0 6px;
-  font-size: 15px;
-}
-
 .pack-image img {
   transition: transform 0.4s ease;
 }
@@ -183,15 +223,23 @@
 .pack-card:hover img {
   transform: scale(1.05);
 }
-
-.faq-item p {
-  margin: 0;
-  font-size: 14px;
-  color: #b9b9c3;
-}
   </style>
 </head>
 <body>
+
+  <!-- Age Verification -->
+  <div class="age-overlay" id="ageOverlay">
+    <div class="age-box">
+      <h2>Are you 18 or older?</h2>
+      <p>This site contains adult content. You must be at least 18 years old to enter.</p>
+      <p style="color:#ff3b6a; font-weight:bold; font-size:15px; margin:0 0 18px;">Pay privately. Download instantly.</p>
+      <div class="age-buttons">
+        <button class="age-btn-yes" onclick="confirmAge()">Yes, I'm 18+</button>
+        <button class="age-btn-no" onclick="denyAge()">No</button>
+      </div>
+    </div>
+  </div>
+
   <div class="wrap">
 
     <!-- Header -->
@@ -211,34 +259,6 @@ No subscriptions.</p>
       <p>Private • Simple • One click</p>
     </section>
     
-    <section class="faq">
-  <h2>FAQ</h2>
-
-  <div class="faq-item">
-    <h4>How do I get my pack after payment?</h4>
-    <p>Instant download link appears immediately after checkout.</p>
-  </div>
-
-  <div class="faq-item">
-    <h4>Do I need an account?</h4>
-    <p>No account, no signup. Pay and download.</p>
-  </div>
-
-  <div class="faq-item">
-    <h4>What format are the files?</h4>
-    <p>High-quality JPG/PNG images delivered in a ZIP file.</p>
-  </div>
-
-  <div class="faq-item">
-    <h4>Is my payment private?</h4>
-    <p>Yes. All payments are processed securely and discreetly.</p>
-  </div>
-
-  <div class="faq-item">
-    <h4>Can I re-download my purchase?</h4>
-    <p>Yes, within the allowed download limit shown at checkout.</p>
-  </div>
-</section>
 
     <!-- Footer -->
     <footer>
@@ -256,124 +276,136 @@ No subscriptions.</p>
   </div>
 <script>
 
+function confirmAge() {
+  document.getElementById("ageOverlay").style.display = "none";
+}
+
+function denyAge() {
+  if (document.referrer) {
+    window.location.href = document.referrer;
+  } else {
+    window.location.href = "https://www.google.com";
+  }
+}
+
 const packs = [
 {
 id:"emma_lyla",
 name:"Emma & Lyla OF models",
 images:13,
-price:3.5,
+price:20,
 preview:"/Thumbnails/emma-lyla-of-models.png"
 },
 {
 id:"jenna_ortega",
 name:"Jenna Ortega",
 images:12,
-price:6,
+price:20,
 preview:"/Thumbnails/jenna-ortega.jpg"
 },
 {
 id:"zendaya",
 name:"Zendaya",
 images:11,
-price:6,
+price:20,
 preview:"/Thumbnails/zendaya.jpg"
 },
 {
 id:"ariana_nurse",
 name:"Ariana OF Nurse Model",
 images:12,
-price:3.5,
+price:20,
 preview:"/Thumbnails/ariana-of-nurse.png"
 },
 {
 id:"sedney",
 name:"Sedney Sweeney",
 images:13,
-price:6,
+price:20,
 preview:"/Thumbnails/sedney-sweeney.jpg"
 },
 {
 id:"flora",
 name:"Flora OF Maid model",
 images:10,
-price:3.5,
+price:10,
 preview:"/Thumbnails/flora-of-maid.png"
 },
 {
 id:"emma_meyers",
 name:"Emma Meyers",
 images:11,
-price:6,
+price:20,
 preview:"/Thumbnails/emma-meyers.jpg"
 },
 {
 id:"nina",
 name:"Nina Dobrev",
 images:13,
-price:6,
+price:20,
 preview:"/Thumbnails/nina-dobrev.jpg"
 },
 {
 id:"kitty",
 name:"Kitty Girl OF Model",
 images:6,
-price:2,
+price:10,
 preview:"/Thumbnails/kittygirl.png"
 },
 {
 id:"emma_jenna",
 name:"Jenna Ortega & Emma Meyers",
 images:23,
-price:9,
+price:30,
 preview:"/Thumbnails/emma-Jenna.png"
 },
 {
 id:"zendaya_sedney",
 name:"Zendaya & Sedney Sweeney",
 images:24,
-price:9,
+price:30,
 preview:"/Thumbnails/zendaya-sedney.png"
 },
 {
 id:"emma_zendaya",
 name:"Zendaya & Emma Meyers",
 images:22,
-price:9,
+price:30,
 preview:"/Thumbnails/emma-zendaya.png"
 },
 {
 id:"nina_sedney",
 name:"Sedney Sweeney & Nina Dobrev",
 images:26,
-price:9,
+price:30,
 preview:"/Thumbnails/nina-sedney.png"
 },
 {
 id:"jenna_nina",
 name:"Jenna Ortega & Nina Dobrev",
 images:25,
-price:9,
+price:30,
 preview:"/Thumbnails/jenna-nina.png"
 },
 {
 id:"jenna_zendaya",
 name:"Jenna Ortega & Zendaya",
 images:23,
-price:9,
+price:30,
 preview:"/Thumbnails/jenna-zendaya.png"
 },
 {
 id:"emma_sedney",
 name:"Emma Meyers & Sedney Sweeney",
 images:24,
-price:9,
+price:30,
 preview:"/Thumbnails/emma-sedney.png"
 },
 {
 id:"of_collection",
 name:"OF Models Full collection",
 images:41,
-price:10,
+price:45,
 preview:"/Thumbnails/of-models.png"
 }
 ]
