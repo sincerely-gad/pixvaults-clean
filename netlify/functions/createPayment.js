@@ -1,22 +1,22 @@
 const pool = require('./db')
 
 const PACKS = {
-  emma_lyla: 9.99,
+  emma_lyla: 10,
   jenna_ortega: 14.99,
   zendaya: 14.99,
-  ariana_nurse: 9.99,
+  ariana_nurse: 10,
   sedney: 14.99,
-  flora: 9.99,
-  emma_meyers: 9.99,
-  nina: 9.99,
-  kitty: 9.99,
-  emma_jenna: 19.99,
+  flora: 10,
+  emma_meyers: 10,
+  nina: 10,
+  kitty: 10,
+  emma_jenna: 110,
   zendaya_sedney: 24.99,
-  emma_zendaya: 19.99,
-  nina_sedney: 19.99,
-  jenna_nina: 19.99,
+  emma_zendaya: 110,
+  nina_sedney: 110,
+  jenna_nina: 110,
   jenna_zendaya: 24.99,
-  emma_sedney: 19.99,
+  emma_sedney: 110,
   of_collection: 32.50
 }
 
