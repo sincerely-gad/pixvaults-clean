@@ -1,23 +1,23 @@
 const pool = require('./db')
 
 const PACKS = {
-  emma_lyla: 20,
-  jenna_ortega: 20,
-  zendaya: 20,
-  ariana_nurse: 20,
-  sedney: 20,
-  flora: 10,
-  emma_meyers: 20,
-  nina: 20,
-  kitty: 10,
-  emma_jenna: 30,
-  zendaya_sedney: 30,
-  emma_zendaya: 30,
-  nina_sedney: 30,
-  jenna_nina: 30,
-  jenna_zendaya: 30,
-  emma_sedney: 30,
-  of_collection: 45
+  emma_lyla: 9.99,
+  jenna_ortega: 14.99,
+  zendaya: 14.99,
+  ariana_nurse: 9.99,
+  sedney: 14.99,
+  flora: 9.99,
+  emma_meyers: 9.99,
+  nina: 9.99,
+  kitty: 9.99,
+  emma_jenna: 19.99,
+  zendaya_sedney: 24.99,
+  emma_zendaya: 19.99,
+  nina_sedney: 19.99,
+  jenna_nina: 19.99,
+  jenna_zendaya: 24.99,
+  emma_sedney: 19.99,
+  of_collection: 32.50
 }
 
 exports.handler = async (event) => {
